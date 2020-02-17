@@ -1,0 +1,587 @@
+zexuan@zexuan-linux:/google/src/cloud/zexuan/endor/google3$ kubectl exec -it dremelperftest-0 /bin/sh
+sh-5.0# kubectl create -f cloud/bigquery/endor/infra/config/base/dremelperftest.yaml^C
+sh-5.0# /dremel_query_perf_test.par --spec_file=/dremel_query_perf.spec --alsologtostderr
+E1010 06:29:42.845606      19 init_google.cc:352] Switching to user nobody, LOAS will not work (consider using --uid=)
+I1010 06:29:43.053038      19 app.py:356] C++ logging enabled; logging.debug will only be visible when --verbosity/-v are 1 or higher
+I1010 06:29:43.053185      19 app.py:268] Command line arguments:
+I1010 06:29:43.053269      19 app.py:270] argv[0]: '/dremel_query_perf_test.par'
+I1010 06:29:43.053342      19 app.py:270] argv[1]: '--spec_file=/dremel_query_perf.spec'
+I1010 06:29:43.053637      19 app.py:270] argv[2]: '--alsologtostderr'
+I1010 06:29:43.054261      19 app.py:271] Process id 19
+I1010 06:29:43.054618      19 app.py:273] Current working directory /
+I1010 06:29:43.054901      19 app.py:276] Built on Thu Oct 10 06:22:58 2019 (1570688578)
+Built by zexuan@zexuan-linux.kir.corp.google.com:/google/src/cloud/zexuan/endor/google3
+Built as //cloud/helix/testing/perf/tools/stat_analyzer:stat_analyzer_util
+Build ID: 1b92d81a-e9d1-4530-849f-52ea65f4d1e9
+Built from changelist 272255618 possibly in a modified client in CitC workspace null at snapshot 263
+Build platform: gcc-4.X.Y-crosstool-v18-llvm-libcxx-grtev4-k8
+Build tool: Blaze, release blaze-2019.09.26-2 (mainline @271261428)
+Built with par options []
+Currently running under Python 2.7.15: embedded.
+W1010 06:29:43.054992      19 app.py:278] DEBUG BINARY -- Performance may suffer
+I1010 06:29:43.055599      19 dremel_query_perf_test.py:137] Loading test cases from /dremel_query_perf.spec...
+I1010 06:29:43.060801      19 spec_util.py:131] Clean text:     benchmark { key: '5788249008111616' name: 'dremel_auto_semi_join_1' description: 'Dremel auto semi join perf bench mark.' workload { request { request: ' sql: " select count(*) from ( select baby_name from test where year <> 1952 and baby_name in (select  baby_name from test where year > 1952));" TableDef { name: "test" uri: "/s3/xi-s3-1/ningrogers_perftest/*" } ' } } }   benchmark_template: { project_name: 'Dremel' owner_list: 'steijn@google.com' owner_list: 'bchhay@google.com' owner_list: 'ekoblov@google.com' owner_list: 'hahmadi@google.com' owner_list: 'moshap@google.com' owner_list: 'nitsharm@google.com' owner_list: 'vakilian@google.com' owner_list: 'abaras@google.com' owner_list: 'anahan@google.com' owner_list: 'vmin@google.com' owner_list: 'mentin@google.com' owner_list: 'mdb.dremel@google.com' owner_list: 'mdb.dremel-test@google.com' owner_list: 'mdb.cloud-dataengine@google.com' owner_list: "cloud-dataengine-test@prod.google.com" owner_list: '*' input_value_info: { value_key: "t" label: "time" type: TIMESTAMP }  metric_info_list: { value_key: "dtt" label: "DremelTotalTimeMs" } metric_info_list: { value_key: "dt" label: "DremelExecutionTimeMs" } metric_info_list: { value_key: "dc" label: "DremelCpuTimeMs" } metric_info_list: { value_key: "sm" label: "DremelSlotTimeMs" } metric_info_list: { value_key: "psm" label: "DremelPreemptionSlotTimeMs" } metric_info_list: { value_key: "csm" label: "DremelCancelledSlotTimeMs" } metric_info_list: { value_key: "rs" label: "DremelNumRowsScanned" }  metric_info_list: { value_key: "qt" label: "DremelQueuedTimeMs" } metric_info_list: { value_key: "bt" label: "DremelBackendProcessingTimeMs" } metric_info_list: { value_key: "tr" label: "DremelTableResolutionTimeMs" } metric_info_list: { value_key: "et" label: "DremelExpansionTimeMs" } metric_info_list: { value_key: "lst" label: "DremelLoadSchemaTimeMs" } metric_info_list: { value_key: "qpt" label: "DremelQueryPlanBuildTimeMs" } metric_info_list: { value_key: "dpt" label: "DremelDistributedPlanBuildTimeMs" } metric_info_list: { value_key: "dbt" label: "DremelDispatchPlanBuildTimeMs" } metric_info_list: { value_key: "pst" label: "DremelPruneSchemaTimeMs" } metric_info_list: { value_key: "ppt" label: "DremelRootPartitionPruneTimeMs" } metric_info_list: { value_key: "qct" label: "DremelQueryConstraintsTimeMs" } metric_info_list: { value_key: "rat" label: "DremelRecordAssemblyTimeMs" }  metric_info_list: { value_key: "br" label: "DremelBytesRead" } metric_info_list: { value_key: "btr" label: "DremelBytesTransferred" } metric_info_list: { value_key: "sbf" label: "DremelShuffleBytesFlushed" } metric_info_list: { value_key: "sbt" label: "DremelShuffleBytesTimeMs" } metric_info_list: { value_key: "swt" label: "DremelShuffleWaitTimeMs" } metric_info_list: { value_key: "sbp" label: "DremelShuffleBytesProduced" } metric_info_list: { value_key: "sbc" label: "DremelShuffleBytesConsumed" } metric_info_list: { value_key: "st" label: "DremelNumSkippedTablets" } metric_info_list: { value_key: "rpt" label: "DremelRootPrunedTablets" } metric_info_list: { value_key: "mpmb" label: "DremelMaxPartitionMaterializedBytes" } metric_info_list: { value_key: "nmf" label: "DremelNumMaterializedFiles" } metric_info_list: { value_key: "iitt" label: "DremelIOInitTabletTime" } metric_info_list: { value_key: "iftt" label: "DremelIOFetchTabletTime" } metric_info_list: { value_key: "ifdt" label: "DremelIOFetchDataTime" }  metric_info_list: { value_key: "rmm" label: "DremelTrackedRootMixerMemoryMax" } metric_info_list: { value_key: "rma" label: "DremelTrackedRootMixerMemoryAvailable" } metric_info_list: { value_key: "smm" label: "DremelTrackedShardMemoryMax" } metric_info_list: { value_key: "sma" label: "DremelTrackedShardMemoryAvailable" } metric_info_list: { value_key: "rms" label: "DremelRootMixerActualResultSize" }  metric_info_list: { value_key: "rmst" label: "RootMixerSlotTimeMs" } metric_info_list: { value_key: "rmtt" label: "RootMixerTotalTimeMs" } metric_info_list: { value_key: "rmct" label: "RootMixerCpuTimeMs" } metric_info_list: { value_key: "rmblt" label: "RootMixerBlockedTimeMs" } metric_info_list: { value_key: "rmcwt" label: "RootMixerCpuWaitTimeMs" } metric_info_list: { value_key: "rmmwt" label: "RootMixerMemoryWaitTimeMs" } metric_info_list: { value_key: "rmswt" label: "RootMixerShuffleWaitTimeMs" } metric_info_list: { value_key: "rmswwt" label: "RootMixerShuffleWriteWaitTimeMs" } metric_info_list: { value_key: "rmnwt" label: "RootMixerMaterializeWaitTimeMs" } metric_info_list: { value_key: "rmiwt" label: "RootMixerIOWaitTimeMs" } metric_info_list: { value_key: "rmitwt" label: "RootMixerIOThrottleWaitTimeMs" } metric_info_list: { value_key: "rmstwt" label: "RootMixerStartWaitTimeMs" }  metric_info_list: { value_key: "sst" label: "DremelShardSlotTimeMs" } metric_info_list: { value_key: "stt" label: "DremelShardTotalTimeMs" } metric_info_list: { value_key: "sct" label: "DremelShardCpuTimeMs" } metric_info_list: { value_key: "sblt" label: "DremelShardBlockedTimeMs" } metric_info_list: { value_key: "scwt" label: "DremelShardCpuWaitTimeMs" } metric_info_list: { value_key: "smwt" label: "DremelShardMemoryWaitTimeMs" } metric_info_list: { value_key: "sswt" label: "DremelShardShuffleWaitTimeMs" } metric_info_list: { value_key: "sswwt" label: "DremelShardShuffleWriteWaitTimeMs" } metric_info_list: { value_key: "snwt" label: "DremelShardMaterializeWaitTimeMs" } metric_info_list: { value_key: "siwt" label: "DremelShardIOWaitTimeMs" } metric_info_list: { value_key: "sitwt" label: "DremelShardIOThrottleWaitTimeMs" } metric_info_list: { value_key: "sstwt" label: "DremelShardStartWaitTimeMs" } }
+I1010 06:29:43.080504      19 dremel_query_perf_test.py:141] Benchmark specs:
+I1010 06:29:43.084729      19 dremel_query_perf_test.py:143] line: benchmark_template {
+I1010 06:29:43.084859      19 dremel_query_perf_test.py:143] line:   project_name: "Dremel"
+I1010 06:29:43.084994      19 dremel_query_perf_test.py:143] line:   owner_list: "steijn@google.com"
+I1010 06:29:43.085145      19 dremel_query_perf_test.py:143] line:   owner_list: "bchhay@google.com"
+I1010 06:29:43.085310      19 dremel_query_perf_test.py:143] line:   owner_list: "ekoblov@google.com"
+I1010 06:29:43.085451      19 dremel_query_perf_test.py:143] line:   owner_list: "hahmadi@google.com"
+I1010 06:29:43.085533      19 dremel_query_perf_test.py:143] line:   owner_list: "moshap@google.com"
+I1010 06:29:43.085651      19 dremel_query_perf_test.py:143] line:   owner_list: "nitsharm@google.com"
+I1010 06:29:43.085727      19 dremel_query_perf_test.py:143] line:   owner_list: "vakilian@google.com"
+I1010 06:29:43.085839      19 dremel_query_perf_test.py:143] line:   owner_list: "abaras@google.com"
+I1010 06:29:43.085977      19 dremel_query_perf_test.py:143] line:   owner_list: "anahan@google.com"
+I1010 06:29:43.086124      19 dremel_query_perf_test.py:143] line:   owner_list: "vmin@google.com"
+I1010 06:29:43.086252      19 dremel_query_perf_test.py:143] line:   owner_list: "mentin@google.com"
+I1010 06:29:43.086328      19 dremel_query_perf_test.py:143] line:   owner_list: "mdb.dremel@google.com"
+I1010 06:29:43.086457      19 dremel_query_perf_test.py:143] line:   owner_list: "mdb.dremel-test@google.com"
+I1010 06:29:43.086567      19 dremel_query_perf_test.py:143] line:   owner_list: "mdb.cloud-dataengine@google.com"
+I1010 06:29:43.086651      19 dremel_query_perf_test.py:143] line:   owner_list: "cloud-dataengine-test@prod.google.com"
+I1010 06:29:43.086763      19 dremel_query_perf_test.py:143] line:   owner_list: "*"
+I1010 06:29:43.086885      19 dremel_query_perf_test.py:143] line:   input_value_info {
+I1010 06:29:43.086992      19 dremel_query_perf_test.py:143] line:     value_key: "t"
+I1010 06:29:43.087126      19 dremel_query_perf_test.py:143] line:     label: "time"
+I1010 06:29:43.087238      19 dremel_query_perf_test.py:143] line:     type: TIMESTAMP
+I1010 06:29:43.087351      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.087430      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.087495      19 dremel_query_perf_test.py:143] line:     value_key: "dtt"
+I1010 06:29:43.087561      19 dremel_query_perf_test.py:143] line:     label: "DremelTotalTimeMs"
+I1010 06:29:43.087633      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.087706      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.087781      19 dremel_query_perf_test.py:143] line:     value_key: "dt"
+I1010 06:29:43.087854      19 dremel_query_perf_test.py:143] line:     label: "DremelExecutionTimeMs"
+I1010 06:29:43.087920      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.087989      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.088081      19 dremel_query_perf_test.py:143] line:     value_key: "dc"
+I1010 06:29:43.088158      19 dremel_query_perf_test.py:143] line:     label: "DremelCpuTimeMs"
+I1010 06:29:43.088231      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.088304      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.088390      19 dremel_query_perf_test.py:143] line:     value_key: "sm"
+I1010 06:29:43.088471      19 dremel_query_perf_test.py:143] line:     label: "DremelSlotTimeMs"
+I1010 06:29:43.088538      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.088611      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.088699      19 dremel_query_perf_test.py:143] line:     value_key: "psm"
+I1010 06:29:43.088784      19 dremel_query_perf_test.py:143] line:     label: "DremelPreemptionSlotTimeMs"
+I1010 06:29:43.088868      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.088953      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.089037      19 dremel_query_perf_test.py:143] line:     value_key: "csm"
+I1010 06:29:43.089142      19 dremel_query_perf_test.py:143] line:     label: "DremelCancelledSlotTimeMs"
+I1010 06:29:43.089228      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.089311      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.089404      19 dremel_query_perf_test.py:143] line:     value_key: "rs"
+I1010 06:29:43.089493      19 dremel_query_perf_test.py:143] line:     label: "DremelNumRowsScanned"
+I1010 06:29:43.089698      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.089788      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.089871      19 dremel_query_perf_test.py:143] line:     value_key: "qt"
+I1010 06:29:43.089960      19 dremel_query_perf_test.py:143] line:     label: "DremelQueuedTimeMs"
+I1010 06:29:43.090063      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.090150      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.090234      19 dremel_query_perf_test.py:143] line:     value_key: "bt"
+I1010 06:29:43.090322      19 dremel_query_perf_test.py:143] line:     label: "DremelBackendProcessingTimeMs"
+I1010 06:29:43.090415      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.090502      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.090586      19 dremel_query_perf_test.py:143] line:     value_key: "tr"
+I1010 06:29:43.090674      19 dremel_query_perf_test.py:143] line:     label: "DremelTableResolutionTimeMs"
+I1010 06:29:43.090754      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.090833      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.090904      19 dremel_query_perf_test.py:143] line:     value_key: "et"
+I1010 06:29:43.090969      19 dremel_query_perf_test.py:143] line:     label: "DremelExpansionTimeMs"
+I1010 06:29:43.091056      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.091124      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.091188      19 dremel_query_perf_test.py:143] line:     value_key: "lst"
+I1010 06:29:43.091254      19 dremel_query_perf_test.py:143] line:     label: "DremelLoadSchemaTimeMs"
+I1010 06:29:43.091328      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.091413      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.091490      19 dremel_query_perf_test.py:143] line:     value_key: "qpt"
+I1010 06:29:43.091564      19 dremel_query_perf_test.py:143] line:     label: "DremelQueryPlanBuildTimeMs"
+I1010 06:29:43.091632      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.091699      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.091768      19 dremel_query_perf_test.py:143] line:     value_key: "dpt"
+I1010 06:29:43.091833      19 dremel_query_perf_test.py:143] line:     label: "DremelDistributedPlanBuildTimeMs"
+I1010 06:29:43.091906      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.091984      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.092058      19 dremel_query_perf_test.py:143] line:     value_key: "dbt"
+I1010 06:29:43.092129      19 dremel_query_perf_test.py:143] line:     label: "DremelDispatchPlanBuildTimeMs"
+I1010 06:29:43.092197      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.092273      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.092353      19 dremel_query_perf_test.py:143] line:     value_key: "pst"
+I1010 06:29:43.092433      19 dremel_query_perf_test.py:143] line:     label: "DremelPruneSchemaTimeMs"
+I1010 06:29:43.092497      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.092575      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.092649      19 dremel_query_perf_test.py:143] line:     value_key: "ppt"
+I1010 06:29:43.092726      19 dremel_query_perf_test.py:143] line:     label: "DremelRootPartitionPruneTimeMs"
+I1010 06:29:43.092801      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.092866      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.092934      19 dremel_query_perf_test.py:143] line:     value_key: "qct"
+I1010 06:29:43.093008      19 dremel_query_perf_test.py:143] line:     label: "DremelQueryConstraintsTimeMs"
+I1010 06:29:43.093096      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.093168      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.093244      19 dremel_query_perf_test.py:143] line:     value_key: "rat"
+I1010 06:29:43.093312      19 dremel_query_perf_test.py:143] line:     label: "DremelRecordAssemblyTimeMs"
+I1010 06:29:43.093394      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.093462      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.093526      19 dremel_query_perf_test.py:143] line:     value_key: "br"
+I1010 06:29:43.093589      19 dremel_query_perf_test.py:143] line:     label: "DremelBytesRead"
+I1010 06:29:43.093656      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.093739      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.093811      19 dremel_query_perf_test.py:143] line:     value_key: "btr"
+I1010 06:29:43.093878      19 dremel_query_perf_test.py:143] line:     label: "DremelBytesTransferred"
+I1010 06:29:43.093945      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.094010      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.094093      19 dremel_query_perf_test.py:143] line:     value_key: "sbf"
+I1010 06:29:43.094160      19 dremel_query_perf_test.py:143] line:     label: "DremelShuffleBytesFlushed"
+I1010 06:29:43.094227      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.094292      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.094382      19 dremel_query_perf_test.py:143] line:     value_key: "sbt"
+I1010 06:29:43.094451      19 dremel_query_perf_test.py:143] line:     label: "DremelShuffleBytesTimeMs"
+I1010 06:29:43.094519      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.094584      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.094650      19 dremel_query_perf_test.py:143] line:     value_key: "swt"
+I1010 06:29:43.094717      19 dremel_query_perf_test.py:143] line:     label: "DremelShuffleWaitTimeMs"
+I1010 06:29:43.094784      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.094856      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.094928      19 dremel_query_perf_test.py:143] line:     value_key: "sbp"
+I1010 06:29:43.095003      19 dremel_query_perf_test.py:143] line:     label: "DremelShuffleBytesProduced"
+I1010 06:29:43.095087      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.095156      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.095224      19 dremel_query_perf_test.py:143] line:     value_key: "sbc"
+I1010 06:29:43.095291      19 dremel_query_perf_test.py:143] line:     label: "DremelShuffleBytesConsumed"
+I1010 06:29:43.095357      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.095434      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.095509      19 dremel_query_perf_test.py:143] line:     value_key: "st"
+I1010 06:29:43.095577      19 dremel_query_perf_test.py:143] line:     label: "DremelNumSkippedTablets"
+I1010 06:29:43.095653      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.095720      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.095817      19 dremel_query_perf_test.py:143] line:     value_key: "rpt"
+I1010 06:29:43.095883      19 dremel_query_perf_test.py:143] line:     label: "DremelRootPrunedTablets"
+I1010 06:29:43.095951      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.096017      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.096101      19 dremel_query_perf_test.py:143] line:     value_key: "mpmb"
+I1010 06:29:43.096173      19 dremel_query_perf_test.py:143] line:     label: "DremelMaxPartitionMaterializedBytes"
+I1010 06:29:43.096240      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.096314      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.096387      19 dremel_query_perf_test.py:143] line:     value_key: "nmf"
+I1010 06:29:43.096455      19 dremel_query_perf_test.py:143] line:     label: "DremelNumMaterializedFiles"
+I1010 06:29:43.096524      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.096589      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.096656      19 dremel_query_perf_test.py:143] line:     value_key: "iitt"
+I1010 06:29:43.096727      19 dremel_query_perf_test.py:143] line:     label: "DremelIOInitTabletTime"
+I1010 06:29:43.096793      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.096859      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.096942      19 dremel_query_perf_test.py:143] line:     value_key: "iftt"
+I1010 06:29:43.097010      19 dremel_query_perf_test.py:143] line:     label: "DremelIOFetchTabletTime"
+I1010 06:29:43.097099      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.097167      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.097234      19 dremel_query_perf_test.py:143] line:     value_key: "ifdt"
+I1010 06:29:43.097319      19 dremel_query_perf_test.py:143] line:     label: "DremelIOFetchDataTime"
+I1010 06:29:43.097392      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.097460      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.097526      19 dremel_query_perf_test.py:143] line:     value_key: "rmm"
+I1010 06:29:43.097596      19 dremel_query_perf_test.py:143] line:     label: "DremelTrackedRootMixerMemoryMax"
+I1010 06:29:43.097664      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.097729      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.097795      19 dremel_query_perf_test.py:143] line:     value_key: "rma"
+I1010 06:29:43.097861      19 dremel_query_perf_test.py:143] line:     label: "DremelTrackedRootMixerMemoryAvailable"
+I1010 06:29:43.097933      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.097999      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.098083      19 dremel_query_perf_test.py:143] line:     value_key: "smm"
+I1010 06:29:43.098152      19 dremel_query_perf_test.py:143] line:     label: "DremelTrackedShardMemoryMax"
+I1010 06:29:43.098221      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.098286      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.098355      19 dremel_query_perf_test.py:143] line:     value_key: "sma"
+I1010 06:29:43.098431      19 dremel_query_perf_test.py:143] line:     label: "DremelTrackedShardMemoryAvailable"
+I1010 06:29:43.098562      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.098631      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.098701      19 dremel_query_perf_test.py:143] line:     value_key: "rms"
+I1010 06:29:43.098770      19 dremel_query_perf_test.py:143] line:     label: "DremelRootMixerActualResultSize"
+I1010 06:29:43.098840      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.098907      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.098975      19 dremel_query_perf_test.py:143] line:     value_key: "rmst"
+I1010 06:29:43.099066      19 dremel_query_perf_test.py:143] line:     label: "RootMixerSlotTimeMs"
+I1010 06:29:43.099152      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.099219      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.099287      19 dremel_query_perf_test.py:143] line:     value_key: "rmtt"
+I1010 06:29:43.099360      19 dremel_query_perf_test.py:143] line:     label: "RootMixerTotalTimeMs"
+I1010 06:29:43.099441      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.099517      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.099590      19 dremel_query_perf_test.py:143] line:     value_key: "rmct"
+I1010 06:29:43.099661      19 dremel_query_perf_test.py:143] line:     label: "RootMixerCpuTimeMs"
+I1010 06:29:43.099740      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.099817      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.099885      19 dremel_query_perf_test.py:143] line:     value_key: "rmblt"
+I1010 06:29:43.099957      19 dremel_query_perf_test.py:143] line:     label: "RootMixerBlockedTimeMs"
+I1010 06:29:43.100028      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.100117      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.100188      19 dremel_query_perf_test.py:143] line:     value_key: "rmcwt"
+I1010 06:29:43.100258      19 dremel_query_perf_test.py:143] line:     label: "RootMixerCpuWaitTimeMs"
+I1010 06:29:43.100326      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.100393      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.100470      19 dremel_query_perf_test.py:143] line:     value_key: "rmmwt"
+I1010 06:29:43.100552      19 dremel_query_perf_test.py:143] line:     label: "RootMixerMemoryWaitTimeMs"
+I1010 06:29:43.100621      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.100691      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.100772      19 dremel_query_perf_test.py:143] line:     value_key: "rmswt"
+I1010 06:29:43.100845      19 dremel_query_perf_test.py:143] line:     label: "RootMixerShuffleWaitTimeMs"
+I1010 06:29:43.100913      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.100977      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.101060      19 dremel_query_perf_test.py:143] line:     value_key: "rmswwt"
+I1010 06:29:43.101131      19 dremel_query_perf_test.py:143] line:     label: "RootMixerShuffleWriteWaitTimeMs"
+I1010 06:29:43.101197      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.101264      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.101331      19 dremel_query_perf_test.py:143] line:     value_key: "rmnwt"
+I1010 06:29:43.101404      19 dremel_query_perf_test.py:143] line:     label: "RootMixerMaterializeWaitTimeMs"
+I1010 06:29:43.101472      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.101537      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.101603      19 dremel_query_perf_test.py:143] line:     value_key: "rmiwt"
+I1010 06:29:43.101670      19 dremel_query_perf_test.py:143] line:     label: "RootMixerIOWaitTimeMs"
+I1010 06:29:43.101736      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.101803      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.101873      19 dremel_query_perf_test.py:143] line:     value_key: "rmitwt"
+I1010 06:29:43.101939      19 dremel_query_perf_test.py:143] line:     label: "RootMixerIOThrottleWaitTimeMs"
+I1010 06:29:43.102005      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.102086      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.102153      19 dremel_query_perf_test.py:143] line:     value_key: "rmstwt"
+I1010 06:29:43.102226      19 dremel_query_perf_test.py:143] line:     label: "RootMixerStartWaitTimeMs"
+I1010 06:29:43.102292      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.102360      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.102432      19 dremel_query_perf_test.py:143] line:     value_key: "sst"
+I1010 06:29:43.102497      19 dremel_query_perf_test.py:143] line:     label: "DremelShardSlotTimeMs"
+I1010 06:29:43.102561      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.102624      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.102689      19 dremel_query_perf_test.py:143] line:     value_key: "stt"
+I1010 06:29:43.102753      19 dremel_query_perf_test.py:143] line:     label: "DremelShardTotalTimeMs"
+I1010 06:29:43.102817      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.102882      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.102948      19 dremel_query_perf_test.py:143] line:     value_key: "sct"
+I1010 06:29:43.103015      19 dremel_query_perf_test.py:143] line:     label: "DremelShardCpuTimeMs"
+I1010 06:29:43.103099      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.103167      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.103232      19 dremel_query_perf_test.py:143] line:     value_key: "sblt"
+I1010 06:29:43.103298      19 dremel_query_perf_test.py:143] line:     label: "DremelShardBlockedTimeMs"
+I1010 06:29:43.103366      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.103438      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.103507      19 dremel_query_perf_test.py:143] line:     value_key: "scwt"
+I1010 06:29:43.103576      19 dremel_query_perf_test.py:143] line:     label: "DremelShardCpuWaitTimeMs"
+I1010 06:29:43.103641      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.103707      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.103771      19 dremel_query_perf_test.py:143] line:     value_key: "smwt"
+I1010 06:29:43.103836      19 dremel_query_perf_test.py:143] line:     label: "DremelShardMemoryWaitTimeMs"
+I1010 06:29:43.103901      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.103966      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.104030      19 dremel_query_perf_test.py:143] line:     value_key: "sswt"
+I1010 06:29:43.104120      19 dremel_query_perf_test.py:143] line:     label: "DremelShardShuffleWaitTimeMs"
+I1010 06:29:43.104189      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.104260      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.104326      19 dremel_query_perf_test.py:143] line:     value_key: "sswwt"
+I1010 06:29:43.104415      19 dremel_query_perf_test.py:143] line:     label: "DremelShardShuffleWriteWaitTimeMs"
+I1010 06:29:43.104485      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.104553      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.104622      19 dremel_query_perf_test.py:143] line:     value_key: "snwt"
+I1010 06:29:43.104691      19 dremel_query_perf_test.py:143] line:     label: "DremelShardMaterializeWaitTimeMs"
+I1010 06:29:43.104759      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.104827      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.104894      19 dremel_query_perf_test.py:143] line:     value_key: "siwt"
+I1010 06:29:43.104959      19 dremel_query_perf_test.py:143] line:     label: "DremelShardIOWaitTimeMs"
+I1010 06:29:43.105025      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.105120      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.105197      19 dremel_query_perf_test.py:143] line:     value_key: "sitwt"
+I1010 06:29:43.105263      19 dremel_query_perf_test.py:143] line:     label: "DremelShardIOThrottleWaitTimeMs"
+I1010 06:29:43.105334      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.105412      19 dremel_query_perf_test.py:143] line:   metric_info_list {
+I1010 06:29:43.105491      19 dremel_query_perf_test.py:143] line:     value_key: "sstwt"
+I1010 06:29:43.105560      19 dremel_query_perf_test.py:143] line:     label: "DremelShardStartWaitTimeMs"
+I1010 06:29:43.105632      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.105702      19 dremel_query_perf_test.py:143] line: }
+I1010 06:29:43.105785      19 dremel_query_perf_test.py:143] line: benchmark {
+I1010 06:29:43.105863      19 dremel_query_perf_test.py:143] line:   key: "5788249008111616"
+I1010 06:29:43.105934      19 dremel_query_perf_test.py:143] line:   name: "dremel_auto_semi_join_1"
+I1010 06:29:43.106010      19 dremel_query_perf_test.py:143] line:   description: "Dremel auto semi join perf bench mark."
+I1010 06:29:43.106093      19 dremel_query_perf_test.py:143] line:   workload {
+I1010 06:29:43.106163      19 dremel_query_perf_test.py:143] line:     request {
+I1010 06:29:43.106232      19 dremel_query_perf_test.py:143] line:       request: " sql: \" select count(*) from ( select baby_name from test where year <> 1952 and baby_name in (select  baby_name from test where year > 1952));\" TableDef { name: \"test\" uri: \"/s3/xi-s3-1/ningrogers_perftest/*\" } "
+I1010 06:29:43.106302      19 dremel_query_perf_test.py:143] line:     }
+I1010 06:29:43.106380      19 dremel_query_perf_test.py:143] line:   }
+I1010 06:29:43.106463      19 dremel_query_perf_test.py:143] line: }
+I1010 06:29:43.106536      19 dremel_query_perf_test.py:143] line:
+Running tests under Python 2.7.15: embedded.
+I1010 06:29:43.204139      19 bq_benchmark_base.py:1166] BigQuery single request benchmark SUT endpoint:
+api: https://www.googleapis.com
+instance_name: None
+instance_name_2: None
+environment: None
+version: v2
+stack_cell: ir
+stack_owner:
+I1010 06:29:43.204265      19 bq_benchmark_base.py:1169] Fetching service account and credentials.
+[ RUN      ] DremelSingleQueryBenchmarkTest.test_dremel_auto_semi_join_1
+W1010 06:29:43.205242      19 build_cl.cc:22] Unable to apply build changelist information: generic::unavailable: build changelist metadata is not available
+I1010 06:29:43.205523      19 bq_benchmark_base.py:1516] Executing benchmark (timeout_sec: 900) on workload:
+[<google3.cloud.helix.testing.perf.spec_util.SpecBenchmarkRequest object at 0xdc429833290>]
+I1010 06:29:43.208141      19 bq_benchmark_base.py:1542] iter_type_list: [<IterationType.WARMUP: 1>, <IterationType.STANDARD: 2>, <IterationType.STANDARD: 2>, <IterationType.STANDARD: 2>, <IterationType.STANDARD: 2>]
+I1010 06:29:43.208433      19 bq_benchmark_base.py:1549] Starting benchmark master class with sampler type: <class 'google3.analysis.dremel.testing.perf.samplers.dremel_query_sampler.DremelSingleQuerySampler'> and sampler arguments: {'do_signal': True, 'connection_spec': '/bns/chubby-0.chubby.default.svc.cluster.local:6200/dremelgateway/0:gwport', 'query_priority': 50, 'timeout_epoch_sec': 1570689883.208335, 'iter_type_list': [<IterationType.WARMUP: 1>, <IterationType.STANDARD: 2>, <IterationType.STANDARD: 2>, <IterationType.STANDARD: 2>, <IterationType.STANDARD: 2>], 'profiling_manager': <google3.analysis.dremel.testing.perf.profiling.profiling.BorgCpuProfilingManager object at 0xdc429833350>}
+I1010 06:29:43.208572      19 load_main_base.py:69] LoadMain.Execute()
+I1010 06:29:43.208668      19 init-domain.cc:33] Fiber init: default domain = pthread, concurrency = 35
+I1010 06:29:43.208913      19 microservice_server.py:71] Starting microservice_server.Server
+I1010 06:29:43.209419      38 server_inprocess.cc:16] Starting microservice server in process.
+I1010 06:29:43.209547      38 pubsub_recorder.cc:60] PubsubRecorder constructor: topic= /pubsub2/service/perfgate-client-analytics, id=perfgate-client
+I1010 06:29:43.209600      38 pubsub_recorder.cc:77] Create pubsub2::Publisher with topic /pubsub2/service/perfgate-client-analytics and ID perfgate-client
+I1010 06:29:43.209636      19 python_stack_size.cc:43] EventManager thread stack size increased to 245760 for non-test Python use.
+I1010 06:29:43.209892      38 colocdistance.cc:69] Loading /ls/any/slave/production/traffic/colocdistance-gzip.pb from chubby
+I1010 06:29:43.210590      38 lockservice_accurate_time.cc:29] Not using TrueTime, fall back to regular impl.
+I1010 06:29:43.215699      19 rpc-internals-version.cc:190] RPC_VERSION: Saw use of RPC version 2 client
+I1010 06:29:43.216862      38 lockservice_accurate_time.cc:51] AccurateTime was already initialized.
+I1010 06:29:43.218314      78 signer.cc:527] No AuthChain key found
+I1010 06:29:43.222201      38 client_instance.cc:187] [chubby-0.chubby.default.svc.cluster.local:6200][0] new waiter thread: waiters_id: /lbns/chubby/chubby-0.chubby.default.svc.cluster.local:6200/svelte;svelte-tasks.chubby-0.chubby.default.svc.cluster.local:6200.ls.google.com.:6297;svelte-chubby-0.chubby.default.svc.cluster.local:6200.prodz.google.com.:6297;chubby-0.chubby.default.svc.cluster.local:6200.svelte.global.ls.google.com.:6297, chubby-0.chubby.default.svc.cluster.local:6200, 1623
+I1010 06:29:43.224235     114 schedulinglatency.cc:175] GetKernelCPUSchedulingLatency: Couldn't get kernel cpu latc from /sys/fs/cgroup/cpu,cpuacct/kubepods/burstable/pod1a254c0d-eb27-11e9-a2f4-4201ac100014/28be1ad078f3542a8b8a281959b5653d9e2e3c0143987a7cabcf18e772671671/cpu.lat
+I1010 06:29:43.224326     113 chubby_util.cc:106] Could not retrieve scheduling latency for identifying SLO support status
+W1010 06:29:43.224892      77 securewrapper_utils.cc:258] Could not get the default role (maybe need to run prodaccess in corp?): open failed for /.loas/nobody.loas2credentials: No such file or directory
+E1010 06:29:43.224914     113 loas_util.cc:506] generic::not_found: open failed for /.loas/nobody.loas2credentials: No such file or directory
+W1010 06:29:43.225012     113 lockservice_loas.cc:66] Unable to get username from LocAS
+W1010 06:29:43.225220     113 lockservice_loas.cc:72] Unable to get security realms from LocAS: generic::failed_precondition: open failed for /.loas/nobody.loas2credentials: No such file or directory; Realms info is not available in Loas identity
+W1010 06:29:43.225496      77 securewrapper_utils.cc:258] Could not get the default role (maybe need to run prodaccess in corp?): open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:29:43.226248     113 root_defaults.cc:236] [streamz] Unparseable hostname: dremelperftest-0.dremelperftest.default.svc.cluster.local
+I1010 06:29:43.227926     113 server_pool.cc:187] [chubby-0.chubby.default.svc.cluster.local:6200] found no svelte servers!
+I1010 06:29:43.227992     113 server_pool.cc:188] Servers:
+I1010 06:29:43.228033     113 server_pool.cc:190] /lbns/chubby/chubby-0.chubby.default.svc.cluster.local:6200/svelte
+I1010 06:29:43.228093     113 server_pool.cc:190] svelte-tasks.chubby-0.chubby.default.svc.cluster.local:6200.ls.google.com.:6297
+I1010 06:29:43.228129     113 server_pool.cc:190] svelte-chubby-0.chubby.default.svc.cluster.local:6200.prodz.google.com.:6297
+I1010 06:29:43.228164     113 server_pool.cc:190] chubby-0.chubby.default.svc.cluster.local:6200.svelte.global.ls.google.com.:6297
+W1010 06:29:43.454265      40 securewrapper_utils.cc:258] Could not get the default role (maybe need to run prodaccess in corp?): open failed for /.loas/nobody.loas2credentials: No such file or directory
+W1010 06:29:43.798604      75 securewrapper_utils.cc:258] Could not get the default role (maybe need to run prodaccess in corp?): open failed for /.loas/nobody.loas2credentials: No such file or directory
+W1010 06:29:44.286082      76 securewrapper_utils.cc:258] Could not get the default role (maybe need to run prodaccess in corp?): open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:29:44.881096     113 server_pool.cc:187] [chubby-0.chubby.default.svc.cluster.local:6200] found no svelte servers!
+I1010 06:29:44.881196     113 server_pool.cc:188] Servers:
+I1010 06:29:44.881220     113 server_pool.cc:190] /lbns/chubby/chubby-0.chubby.default.svc.cluster.local:6200/svelte
+I1010 06:29:44.881254     113 server_pool.cc:190] svelte-tasks.chubby-0.chubby.default.svc.cluster.local:6200.ls.google.com.:6297
+I1010 06:29:44.881292     113 server_pool.cc:190] svelte-chubby-0.chubby.default.svc.cluster.local:6200.prodz.google.com.:6297
+I1010 06:29:44.881323     113 server_pool.cc:190] chubby-0.chubby.default.svc.cluster.local:6200.svelte.global.ls.google.com.:6297
+W1010 06:29:44.929697      75 securewrapper_utils.cc:258] Could not get the default role (maybe need to run prodaccess in corp?): open failed for /.loas/nobody.loas2credentials: No such file or directory
+W1010 06:29:46.236242      76 securewrapper_utils.cc:258] Could not get the default role (maybe need to run prodaccess in corp?): open failed for /.loas/nobody.loas2credentials: No such file or directory
+W1010 06:29:47.937856      75 securewrapper_utils.cc:258] Could not get the default role (maybe need to run prodaccess in corp?): open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:29:48.875186     113 server_pool.cc:187] [chubby-0.chubby.default.svc.cluster.local:6200] found no svelte servers!
+I1010 06:29:48.875275     113 server_pool.cc:188] Servers:
+I1010 06:29:48.875309     113 server_pool.cc:190] /lbns/chubby/chubby-0.chubby.default.svc.cluster.local:6200/svelte
+I1010 06:29:48.875343     113 server_pool.cc:190] svelte-tasks.chubby-0.chubby.default.svc.cluster.local:6200.ls.google.com.:6297
+I1010 06:29:48.875381     113 server_pool.cc:190] svelte-chubby-0.chubby.default.svc.cluster.local:6200.prodz.google.com.:6297
+I1010 06:29:48.875412     113 server_pool.cc:190] chubby-0.chubby.default.svc.cluster.local:6200.svelte.global.ls.google.com.:6297
+W1010 06:29:50.283429      76 securewrapper_utils.cc:258] Could not get the default role (maybe need to run prodaccess in corp?): open failed for /.loas/nobody.loas2credentials: No such file or directory
+W1010 06:29:53.931416      75 securewrapper_utils.cc:258] Could not get the default role (maybe need to run prodaccess in corp?): open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:29:56.461199     113 server_pool.cc:187] [chubby-0.chubby.default.svc.cluster.local:6200] found no svelte servers!
+I1010 06:29:56.461303     113 server_pool.cc:188] Servers:
+I1010 06:29:56.461340     113 server_pool.cc:190] /lbns/chubby/chubby-0.chubby.default.svc.cluster.local:6200/svelte
+I1010 06:29:56.461379     113 server_pool.cc:190] svelte-tasks.chubby-0.chubby.default.svc.cluster.local:6200.ls.google.com.:6297
+I1010 06:29:56.461413     113 server_pool.cc:190] svelte-chubby-0.chubby.default.svc.cluster.local:6200.prodz.google.com.:6297
+I1010 06:29:56.461454     113 server_pool.cc:190] chubby-0.chubby.default.svc.cluster.local:6200.svelte.global.ls.google.com.:6297
+W1010 06:29:56.462625      38 colocdistance.cc:73] Failed to load /ls/any/slave/production/traffic/colocdistance-gzip.pb from chubby. Took 13252ms.
+I1010 06:29:56.463383      38 backoff.cc:107] Using --util_time_backoff_seed=0
+E1010 06:29:56.463452      38 cluster_costs.cc:137] Failed to load colocdistance from chubby: LockService LSAvailabilityCache::GetContentsAndStat error: /ls/any/slave/production/traffic/colocdistance-gzip.pb: service unavailable, will try again in 100.6411005ms
+I1010 06:29:56.564269      38 colocdistance.cc:69] Loading /ls/any/slave/production/traffic/colocdistance-gzip.pb from chubby
+W1010 06:29:56.564484      38 colocdistance.cc:73] Failed to load /ls/any/slave/production/traffic/colocdistance-gzip.pb from chubby. Took 0ms.
+I1010 06:29:56.575586      38 google3_events_initialization.cc:30] Events instance instantiated with default EnvironmentCollector and Recorder implementations.
+I1010 06:29:56.575661      38 events.cc:47] Session ID for this test: 13597980147754143102
+I1010 06:29:56.575806      38 server_base.cc:51] Microservice server running.
+I1010 06:29:56.575857      38 events.cc:111] Session ID overwritten: 13597980147754143102
+I1010 06:29:56.575968      38 server_base.cc:90] serving socket at: @perfgate_microservice_socket_155349390081993093651355235938709688080
+I1010 06:29:56.576001      38 server_base.cc:99] Creating http server
+I1010 06:29:56.576739      38 expvar_global_linux_google.cc:131] [varz] process-gcu-seconds is not defined: Value of BORG_MILLIGCUS_PER_CPU is undefined
+I1010 06:29:56.577161      38 ip_validation.cc:111] Skipping initialization of special IPs, since dirinfo_root does not exist.
+I1010 06:29:56.578098      38 rpc-internals-version.cc:190] RPC_VERSION: Saw use of RPC version 2 server
+I1010 06:29:56.578847     107 cdd_client_impl.cc:265] [rpcacl_(unknown)_(unknown)] no task id found, no canarying available
+I1010 06:29:56.579381      38 rpc-internals-rate-acl.cc:205] Default rate ACL config: # Default rate ACL is OPEN
+0 0 unknown unknown unknown unknown
+I1010 06:29:56.579488      38 rate_acl_impl.cc:831] new rate_acl checksum: 0xc31012a739f03e1b version: -1
+E1010 06:29:56.579489     157 loas_util.cc:506] generic::not_found: open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:29:56.579854      38 cdd_client_impl.cc:265] [rpcacl_(unknown)_(unknown)] no task id found, no canarying available
+I1010 06:29:56.580914     107 cdd_client_impl.cc:321] [rpcacl_(unknown)_(unknown)] monitoring state in /ls/local/config/cdd/(unknown)_(unknown)/rpcacl_(unknown)_(unknown)/state
+I1010 06:29:56.581017     113 server_pool.cc:187] [chubby-0.chubby.default.svc.cluster.local:6200] found no svelte servers!
+I1010 06:29:56.581092     113 server_pool.cc:188] Servers:
+I1010 06:29:56.581126     113 server_pool.cc:190] /lbns/chubby/chubby-0.chubby.default.svc.cluster.local:6200/svelte
+I1010 06:29:56.581158     113 server_pool.cc:190] svelte-tasks.chubby-0.chubby.default.svc.cluster.local:6200.ls.google.com.:6297
+I1010 06:29:56.581191     113 server_pool.cc:190] svelte-chubby-0.chubby.default.svc.cluster.local:6200.prodz.google.com.:6297
+I1010 06:29:56.581222     113 server_pool.cc:190] chubby-0.chubby.default.svc.cluster.local:6200.svelte.global.ls.google.com.:6297
+I1010 06:29:56.581059      38 cdd_client_impl.cc:321] [rpcacl_(unknown)_(unknown)] monitoring state in /ls/local/config/cdd/(unknown)_(unknown)/rpcacl_(unknown)_(unknown)/state
+W1010 06:29:56.581267     107 svelte_watcher.cc:277] The only Chubby cell names supported in production are canonical cell names. Change cell "chubby-0.chubby.default.svc.cluster.local:6200" in Chubby path "/ls/chubby-0.chubby.default.svc.cluster.local:6200/config/cdd/(unknown)_(unknown)/rpcacl_(unknown)_(unknown)/state" to a canonical cell name, like "pa" or "bigtable.chubby.vd.ls.google.com".
+W1010 06:29:56.581530      38 svelte_watcher.cc:277] The only Chubby cell names supported in production are canonical cell names. Change cell "chubby-0.chubby.default.svc.cluster.local:6200" in Chubby path "/ls/chubby-0.chubby.default.svc.cluster.local:6200/config/cdd/(unknown)_(unknown)/rpcacl_(unknown)_(unknown)/state" to a canonical cell name, like "pa" or "bigtable.chubby.vd.ls.google.com".
+W1010 06:29:56.582082     107 svelte_watcher.cc:277] The only Chubby cell names supported in production are canonical cell names. Change cell "chubby-0.chubby.default.svc.cluster.local:6200" in Chubby path "/ls/chubby-0.chubby.default.svc.cluster.local:6200/config/cdd/(unknown)_(unknown)/rpcacl_(unknown)_(unknown)" to a canonical cell name, like "pa" or "bigtable.chubby.vd.ls.google.com".
+W1010 06:29:56.582626      38 svelte_watcher.cc:277] The only Chubby cell names supported in production are canonical cell names. Change cell "chubby-0.chubby.default.svc.cluster.local:6200" in Chubby path "/ls/chubby-0.chubby.default.svc.cluster.local:6200/config/cdd/(unknown)_(unknown)/rpcacl_(unknown)_(unknown)" to a canonical cell name, like "pa" or "bigtable.chubby.vd.ls.google.com".
+W1010 06:29:56.582812     156 sharded_client.cc:1377] (ganpati-team) Marking Chubby as unreachable (service unavailable)
+I1010 06:29:56.583516     113 server_pool.cc:187] [chubby-0.chubby.default.svc.cluster.local:6200] found no svelte servers!
+I1010 06:29:56.583646     113 server_pool.cc:188] Servers:
+I1010 06:29:56.583691     113 server_pool.cc:190] /lbns/chubby/chubby-0.chubby.default.svc.cluster.local:6200/svelte
+I1010 06:29:56.583760     113 server_pool.cc:190] svelte-tasks.chubby-0.chubby.default.svc.cluster.local:6200.ls.google.com.:6297
+I1010 06:29:56.583846     113 server_pool.cc:190] svelte-chubby-0.chubby.default.svc.cluster.local:6200.prodz.google.com.:6297
+I1010 06:29:56.583905     113 server_pool.cc:190] chubby-0.chubby.default.svc.cluster.local:6200.svelte.global.ls.google.com.:6297
+I1010 06:29:56.584213     159 cdd_client_impl.cc:566] [rpcacl_(unknown)_(unknown)] while watching /ls/local/config/cdd/(unknown)_(unknown)/rpcacl_(unknown)_(unknown): svelte error 303
+I1010 06:29:56.584464     159 cdd_client_impl.cc:566] [rpcacl_(unknown)_(unknown)] while watching /ls/local/config/cdd/(unknown)_(unknown)/rpcacl_(unknown)_(unknown): svelte error 303
+I1010 06:29:56.584631     159 cdd_client_impl.cc:489] [rpcacl_(unknown)_(unknown)] while watching /ls/local/config/cdd/(unknown)_(unknown)/rpcacl_(unknown)_(unknown)/state: svelte error 303
+I1010 06:29:56.584886     159 cdd_client_impl.cc:489] [rpcacl_(unknown)_(unknown)] while watching /ls/local/config/cdd/(unknown)_(unknown)/rpcacl_(unknown)_(unknown)/state: svelte error 303
+W1010 06:29:56.585037     157 label_acl_impl.cc:650] Unexpected CDD Status: 2
+I1010 06:29:56.594817      38 server_base.cc:118] Creating thread pool
+I1010 06:29:56.597136      38 server_base.cc:126] Adding DirectorService
+I1010 06:29:56.601558      38 server_base.cc:133] Adding SamplerBossService
+I1010 06:29:56.612090      38 server_base.cc:140] Adding QueueService
+I1010 06:29:56.612527      38 server_base.cc:147] Adding LoadMainService
+I1010 06:29:56.613137      38 server_base.cc:155] Starting to accept requests
+W1010 06:29:59.596902      77 securewrapper_utils.cc:258] Could not get the default role (maybe need to run prodaccess in corp?): open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:29:59.606386      77 internal_iptos.cc:492] GOOGLE_IP_TOS not supported by kernel for ipv4: Protocol not available [92]
+I1010 06:29:59.606477      77 internal_iptos.cc:529] GOOGLE_RECVD_IP_TOS not supported by kernel for ipv4: Protocol not available [92]
+I1010 06:29:59.606536      77 internal_iptos.cc:557] TCP_RECVD_TOS not supported by kernel for ipv4: Protocol not available [92]
+I1010 06:29:59.606585      77 internal_iptos.cc:492] GOOGLE_IP_TOS not supported by kernel for ipv6: Protocol not available [92]
+I1010 06:29:59.606633      77 internal_iptos.cc:557] TCP_RECVD_TOS not supported by kernel for ipv6: Protocol not available [92]
+W1010 06:29:59.607757      77 loas2_securewrapper.cc:439] generic::internal: open failed for /.loas/nobody.loas2credentials: No such file or directory [security_loas_l2.HandshakeError] { handshake_error_code: NEW_SERVER_HANDSHAKER_ERROR securewrapper_error_code: 10 }
+E1010 06:29:59.608673      77 internals-authprotocolparser.cc:1176] Could not pre-initialize server: AUTH_FAIL - open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:29:59.609633      77 loas2_securewrapper.cc:452] generic::internal: open failed for /.loas/nobody.loas2credentials: No such file or directory [security_loas_l2.HandshakeError] { handshake_error_code: NEW_CLIENT_HANDSHAKER_ERROR securewrapper_error_code: 10 }
+I1010 06:29:59.609985      77 internals-authprotocolparser.cc:664]  failed to authenticate channel client-auth:peer=unix:@perfgate_microservice_socket_155349390081993093651355235938709688080 id=10 due to: AUTH_FAIL - open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:29:59.610038      77 internals-authprotocolparser.cc:309]  Failed to authenticate channel [client-auth:peer=unix:@perfgate_microservice_socket_155349390081993093651355235938709688080 id=10]: AUTH_FAIL - open failed for /.loas/nobody.loas2credentials: No such file or directory
+W1010 06:29:59.610714      76 clientchannel.cc:2187] Channel negotiation with unix:@perfgate_microservice_socket_155349390081993093651355235938709688080(unix:@perfgate_microservice_socket_155349390081993093651355235938709688080) failed because authentication failed Failed to authenticate channel [client-auth:peer=unix:@perfgate_microservice_socket_155349390081993093651355235938709688080 id=10]: AUTH_FAIL - open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:30:05.537846     113 server_pool.cc:187] [chubby-0.chubby.default.svc.cluster.local:6200] found no svelte servers!
+I1010 06:30:05.537951     113 server_pool.cc:188] Servers:
+I1010 06:30:05.538000     113 server_pool.cc:190] /lbns/chubby/chubby-0.chubby.default.svc.cluster.local:6200/svelte
+I1010 06:30:05.538224     113 server_pool.cc:190] svelte-tasks.chubby-0.chubby.default.svc.cluster.local:6200.ls.google.com.:6297
+I1010 06:30:05.538282     113 server_pool.cc:190] svelte-chubby-0.chubby.default.svc.cluster.local:6200.prodz.google.com.:6297
+I1010 06:30:05.538330     113 server_pool.cc:190] chubby-0.chubby.default.svc.cluster.local:6200.svelte.global.ls.google.com.:6297
+W1010 06:30:08.668522      76 securewrapper_utils.cc:258] Could not get the default role (maybe need to run prodaccess in corp?): open failed for /.loas/nobody.loas2credentials: No such file or directory
+W1010 06:30:08.669809      40 loas2_securewrapper.cc:439] generic::internal: open failed for /.loas/nobody.loas2credentials: No such file or directory [security_loas_l2.HandshakeError] { handshake_error_code: NEW_SERVER_HANDSHAKER_ERROR securewrapper_error_code: 10 }
+E1010 06:30:08.670006      40 internals-authprotocolparser.cc:1176] Could not pre-initialize server: AUTH_FAIL - open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:30:08.670869      75 internals-authprotocolparser.cc:664]  failed to authenticate channel client-auth:peer=unix:@perfgate_microservice_socket_155349390081993093651355235938709688080 id=11 due to: AUTH_FAIL - open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:30:08.670944      75 internals-authprotocolparser.cc:309]  Failed to authenticate channel [client-auth:peer=unix:@perfgate_microservice_socket_155349390081993093651355235938709688080 id=11]: AUTH_FAIL - open failed for /.loas/nobody.loas2credentials: No such file or directory
+W1010 06:30:19.499709      74 securewrapper_utils.cc:258] Could not get the default role (maybe need to run prodaccess in corp?): open failed for /.loas/nobody.loas2credentials: No such file or directory
+W1010 06:30:19.501107      40 loas2_securewrapper.cc:439] generic::internal: open failed for /.loas/nobody.loas2credentials: No such file or directory [security_loas_l2.HandshakeError] { handshake_error_code: NEW_SERVER_HANDSHAKER_ERROR securewrapper_error_code: 10 }
+E1010 06:30:19.501341      40 internals-authprotocolparser.cc:1176] Could not pre-initialize server: AUTH_FAIL - open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:30:19.502082      77 internals-authprotocolparser.cc:664]  failed to authenticate channel client-auth:peer=unix:@perfgate_microservice_socket_155349390081993093651355235938709688080 id=12 due to: AUTH_FAIL - open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:30:19.502164      77 internals-authprotocolparser.cc:309]  Failed to authenticate channel [client-auth:peer=unix:@perfgate_microservice_socket_155349390081993093651355235938709688080 id=12]: AUTH_FAIL - open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:30:24.226205     113 server_pool.cc:187] [chubby-0.chubby.default.svc.cluster.local:6200] found no svelte servers!
+I1010 06:30:24.226347     113 server_pool.cc:188] Servers:
+I1010 06:30:24.226378     113 server_pool.cc:190] /lbns/chubby/chubby-0.chubby.default.svc.cluster.local:6200/svelte
+I1010 06:30:24.226471     113 server_pool.cc:190] svelte-tasks.chubby-0.chubby.default.svc.cluster.local:6200.ls.google.com.:6297
+I1010 06:30:24.226500     113 server_pool.cc:190] svelte-chubby-0.chubby.default.svc.cluster.local:6200.prodz.google.com.:6297
+I1010 06:30:24.226527     113 server_pool.cc:190] chubby-0.chubby.default.svc.cluster.local:6200.svelte.global.ls.google.com.:6297
+I1010 06:30:31.439385     113 server_pool.cc:187] [chubby-0.chubby.default.svc.cluster.local:6200] found no svelte servers!
+I1010 06:30:31.439536     113 server_pool.cc:188] Servers:
+I1010 06:30:31.439573     113 server_pool.cc:190] /lbns/chubby/chubby-0.chubby.default.svc.cluster.local:6200/svelte
+I1010 06:30:31.439642     113 server_pool.cc:190] svelte-tasks.chubby-0.chubby.default.svc.cluster.local:6200.ls.google.com.:6297
+I1010 06:30:31.439678     113 server_pool.cc:190] svelte-chubby-0.chubby.default.svc.cluster.local:6200.prodz.google.com.:6297
+I1010 06:30:31.439715     113 server_pool.cc:190] chubby-0.chubby.default.svc.cluster.local:6200.svelte.global.ls.google.com.:6297
+W1010 06:30:39.838751      74 securewrapper_utils.cc:258] Could not get the default role (maybe need to run prodaccess in corp?): open failed for /.loas/nobody.loas2credentials: No such file or directory
+W1010 06:30:39.840206      74 loas2_securewrapper.cc:439] generic::internal: open failed for /.loas/nobody.loas2credentials: No such file or directory [security_loas_l2.HandshakeError] { handshake_error_code: NEW_SERVER_HANDSHAKER_ERROR securewrapper_error_code: 10 }
+E1010 06:30:39.840404      74 internals-authprotocolparser.cc:1176] Could not pre-initialize server: AUTH_FAIL - open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:30:39.841101      40 internals-authprotocolparser.cc:664]  failed to authenticate channel client-auth:peer=unix:@perfgate_microservice_socket_155349390081993093651355235938709688080 id=13 due to: AUTH_FAIL - open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:30:39.841177      40 internals-authprotocolparser.cc:309]  Failed to authenticate channel [client-auth:peer=unix:@perfgate_microservice_socket_155349390081993093651355235938709688080 id=13]: AUTH_FAIL - open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:30:43.233699      19 microservice_server.py:201] Waiting for graceful shutdown
+I1010 06:30:48.190326     113 chubby_util.cc:106] Could not retrieve scheduling latency for identifying SLO support status
+I1010 06:30:48.190742     113 server_pool.cc:187] [chubby-0.chubby.default.svc.cluster.local:6200] found no svelte servers!
+I1010 06:30:48.190837     113 server_pool.cc:188] Servers:
+I1010 06:30:48.190896     113 server_pool.cc:190] /lbns/chubby/chubby-0.chubby.default.svc.cluster.local:6200/svelte
+I1010 06:30:48.190948     113 server_pool.cc:190] svelte-tasks.chubby-0.chubby.default.svc.cluster.local:6200.ls.google.com.:6297
+I1010 06:30:48.191011     113 server_pool.cc:190] svelte-chubby-0.chubby.default.svc.cluster.local:6200.prodz.google.com.:6297
+I1010 06:30:48.191098     113 server_pool.cc:190] chubby-0.chubby.default.svc.cluster.local:6200.svelte.global.ls.google.com.:6297
+I1010 06:30:48.234224      19 microservice_server.py:206] Microservice server did not shut down within 5 seconds. Killing process.
+W1010 06:30:48.234379      19 microservice_server.py:255] Cannot kill in-process microservice.
+I1010 06:30:52.512948     113 server_pool.cc:187] [chubby-0.chubby.default.svc.cluster.local:6200] found no svelte servers!
+I1010 06:30:52.513114     113 server_pool.cc:188] Servers:
+I1010 06:30:52.513221     113 server_pool.cc:190] /lbns/chubby/chubby-0.chubby.default.svc.cluster.local:6200/svelte
+I1010 06:30:52.513254     113 server_pool.cc:190] svelte-tasks.chubby-0.chubby.default.svc.cluster.local:6200.ls.google.com.:6297
+I1010 06:30:52.513282     113 server_pool.cc:190] svelte-chubby-0.chubby.default.svc.cluster.local:6200.prodz.google.com.:6297
+I1010 06:30:52.513347     113 server_pool.cc:190] chubby-0.chubby.default.svc.cluster.local:6200.svelte.global.ls.google.com.:6297
+E1010 06:30:53.235349      19 load_main_base.py:107] Load Main error: Traceback (most recent call last):
+File "/dremel_query_perf_test.par/google3/testing/performance/perfgate/internal/py/load/microservice/common/load_main_base.py", line 77, in Execute
+with self._microservice as microservice:
+File "/dremel_query_perf_test.par/google3/testing/performance/perfgate/internal/py/load/microservice/common/microservice_server.py", line 81, in __enter__
+self, 'unix:%s' % self._microservice_socket, _SERVER_STARTUP_SEC)
+File "/dremel_query_perf_test.par/google3/testing/performance/perfgate/internal/py/load/microservice/common/utils.py", line 39, in CreateReachableChannel
+'to be reachable.' % (elapsed(), socket))
+RuntimeError: Timed out after waiting 60 seconds for channel unix:@perfgate_microservice_socket_155349390081993093651355235938709688080 to be reachable.
+I1010 06:30:53.236675      19 pubsub_recorder.cc:105] Publisher status is idle, starting publisher
+W1010 06:30:53.238923     209 svelte_watcher.cc:277] The only Chubby cell names supported in production are canonical cell names. Change cell "chubby-0.chubby.default.svc.cluster.local:6200" in Chubby path "/ls/chubby-0.chubby.default.svc.cluster.local:6200/slave/pubsub/registry/cells/service" to a canonical cell name, like "pa" or "bigtable.chubby.vd.ls.google.com".
+I1010 06:30:53.239875     113 server_pool.cc:187] [chubby-0.chubby.default.svc.cluster.local:6200] found no svelte servers!
+I1010 06:30:53.239944     113 server_pool.cc:188] Servers:
+I1010 06:30:53.239979     113 server_pool.cc:190] /lbns/chubby/chubby-0.chubby.default.svc.cluster.local:6200/svelte
+I1010 06:30:53.240014     113 server_pool.cc:190] svelte-tasks.chubby-0.chubby.default.svc.cluster.local:6200.ls.google.com.:6297
+I1010 06:30:53.240070     113 server_pool.cc:190] svelte-chubby-0.chubby.default.svc.cluster.local:6200.prodz.google.com.:6297
+I1010 06:30:53.241665     209 lockservice_mountpoint.cc:1066] For cell_name=chubby-0.chubby.default.svc.cluster.local:6200 non_prod=1
+I1010 06:30:53.241699     113 server_pool.cc:190] chubby-0.chubby.default.svc.cluster.local:6200.svelte.global.ls.google.com.:6297
+I1010 06:30:53.241738     209 lockservice_mountpoint.cc:1085] For cell_name=chubby-0.chubby.default.svc.cluster.local:6200 not using mountpoints
+I1010 06:30:53.241820     209 lockservice_mountpoint.cc:1396] Mountpoints cell=chubby-0.chubby.default.svc.cluster.local:6200, file=/ls/any/slave/chubby/mountpoints/chubby-0.chubby.default.svc.cluster.local:6200.mountpoints not found, setting rules to empty
+W1010 06:30:53.242033     209 svelte_watcher.cc:277] The only Chubby cell names supported in production are canonical cell names. Change cell "chubby-0.chubby.default.svc.cluster.local:6200" in Chubby path "/ls/chubby-0.chubby.default.svc.cluster.local:6200/slave/pubsub/registry/cells/service" to a canonical cell name, like "pa" or "bigtable.chubby.vd.ls.google.com".
+I1010 06:30:53.242096     201 cell_utility.cc:289] void ipc::pubsub2::CellUtility::WatcherCallback(const std::string &, CellUtility::PerCellState *, const AbstractLSWatcher::UserData *) invoked for pubsub2 cell "service" and chubby file "/ls/local/slave/pubsub/registry/cells/service"
+E1010 06:30:53.242255     201 cell_utility.cc:349] void ipc::pubsub2::CellUtility::WatcherCallback(const std::string &, CellUtility::PerCellState *, const AbstractLSWatcher::UserData *) AbstractLSWatcher(/ls/local/slave/pubsub/registry/cells/service) returned error= service unavailable with last_seen_error=service unavailable
+I1010 06:30:56.564909     204 colocdistance.cc:69] Loading /ls/any/slave/production/traffic/colocdistance-gzip.pb from chubby
+W1010 06:30:56.565218     204 colocdistance.cc:73] Failed to load /ls/any/slave/production/traffic/colocdistance-gzip.pb from chubby. Took 0ms.
+E1010 06:30:56.565392     204 cluster_costs.cc:137] Failed to load colocdistance from chubby: LockService LSAvailabilityCache::GetContentsAndStat error: /ls/any/slave/production/traffic/colocdistance-gzip.pb: service unavailable, will try again in 119.187936ms
+I1010 06:30:56.684800     204 colocdistance.cc:69] Loading /ls/any/slave/production/traffic/colocdistance-gzip.pb from chubby
+W1010 06:30:56.685077     204 colocdistance.cc:73] Failed to load /ls/any/slave/production/traffic/colocdistance-gzip.pb from chubby. Took 0ms.
+E1010 06:30:56.685221     204 cluster_costs.cc:137] Failed to load colocdistance from chubby: LockService LSAvailabilityCache::GetContentsAndStat error: /ls/any/slave/production/traffic/colocdistance-gzip.pb: service unavailable, will try again in 123.57964475ms
+I1010 06:30:56.809021     204 colocdistance.cc:69] Loading /ls/any/slave/production/traffic/colocdistance-gzip.pb from chubby
+W1010 06:30:56.809298     204 colocdistance.cc:73] Failed to load /ls/any/slave/production/traffic/colocdistance-gzip.pb from chubby. Took 0ms.
+E1010 06:30:56.809544     204 cluster_costs.cc:137] Failed to load colocdistance from chubby: LockService LSAvailabilityCache::GetContentsAndStat error: /ls/any/slave/production/traffic/colocdistance-gzip.pb: service unavailable, will try again in 164.88243725ms
+I1010 06:30:56.974617     204 colocdistance.cc:69] Loading /ls/any/slave/production/traffic/colocdistance-gzip.pb from chubby
+W1010 06:30:56.974826     204 colocdistance.cc:73] Failed to load /ls/any/slave/production/traffic/colocdistance-gzip.pb from chubby. Took 0ms.
+E1010 06:30:56.974931     204 cluster_costs.cc:137] Failed to load colocdistance from chubby: LockService LSAvailabilityCache::GetContentsAndStat error: /ls/any/slave/production/traffic/colocdistance-gzip.pb: service unavailable, will try again in 189.31145925ms
+I1010 06:30:57.164667     204 colocdistance.cc:69] Loading /ls/any/slave/production/traffic/colocdistance-gzip.pb from chubby
+W1010 06:30:57.164959     204 colocdistance.cc:73] Failed to load /ls/any/slave/production/traffic/colocdistance-gzip.pb from chubby. Took 0ms.
+E1010 06:30:57.165090     204 cluster_costs.cc:137] Failed to load colocdistance from chubby: LockService LSAvailabilityCache::GetContentsAndStat error: /ls/any/slave/production/traffic/colocdistance-gzip.pb: service unavailable, will try again in 258.4635035ms
+I1010 06:30:57.423812     204 colocdistance.cc:69] Loading /ls/any/slave/production/traffic/colocdistance-gzip.pb from chubby
+W1010 06:30:57.424027     204 colocdistance.cc:73] Failed to load /ls/any/slave/production/traffic/colocdistance-gzip.pb from chubby. Took 0ms.
+E1010 06:30:57.424192     204 cluster_costs.cc:137] Failed to load colocdistance from chubby: LockService LSAvailabilityCache::GetContentsAndStat error: /ls/any/slave/production/traffic/colocdistance-gzip.pb: service unavailable, will try again in 140.707456ms
+I1010 06:30:57.565143     204 colocdistance.cc:69] Loading /ls/any/slave/production/traffic/colocdistance-gzip.pb from chubby
+W1010 06:30:57.565380     204 colocdistance.cc:73] Failed to load /ls/any/slave/production/traffic/colocdistance-gzip.pb from chubby. Took 0ms.
+W1010 06:30:59.705880      40 securewrapper_utils.cc:258] Could not get the default role (maybe need to run prodaccess in corp?): open failed for /.loas/nobody.loas2credentials: No such file or directory
+W1010 06:30:59.707243      72 loas2_securewrapper.cc:439] generic::internal: open failed for /.loas/nobody.loas2credentials: No such file or directory [security_loas_l2.HandshakeError] { handshake_error_code: NEW_SERVER_HANDSHAKER_ERROR securewrapper_error_code: 10 }
+E1010 06:30:59.707648      72 internals-authprotocolparser.cc:1176] Could not pre-initialize server: AUTH_FAIL - open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:30:59.708414      40 loas2_securewrapper.cc:452] generic::internal: open failed for /.loas/nobody.loas2credentials: No such file or directory [security_loas_l2.HandshakeError] { handshake_error_code: NEW_CLIENT_HANDSHAKER_ERROR securewrapper_error_code: 10 }
+I1010 06:30:59.708607      40 internals-authprotocolparser.cc:664]  failed to authenticate channel client-auth:peer=unix:@perfgate_microservice_socket_155349390081993093651355235938709688080 id=14 due to: AUTH_FAIL - open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:30:59.708667      40 internals-authprotocolparser.cc:309]  Failed to authenticate channel [client-auth:peer=unix:@perfgate_microservice_socket_155349390081993093651355235938709688080 id=14]: AUTH_FAIL - open failed for /.loas/nobody.loas2credentials: No such file or directory
+I1010 06:31:07.528651     113 server_pool.cc:187] [chubby-0.chubby.default.svc.cluster.local:6200] found no svelte servers!
+I1010 06:31:07.528776     113 server_pool.cc:188] Servers:
+I1010 06:31:07.528839     113 server_pool.cc:190] /lbns/chubby/chubby-0.chubby.default.svc.cluster.local:6200/svelte
+I1010 06:31:07.528880     113 server_pool.cc:190] svelte-tasks.chubby-0.chubby.default.svc.cluster.local:6200.ls.google.com.:6297
+I1010 06:31:07.528921     113 server_pool.cc:190] svelte-chubby-0.chubby.default.svc.cluster.local:6200.prodz.google.com.:6297
+I1010 06:31:07.528964     113 server_pool.cc:190] chubby-0.chubby.default.svc.cluster.local:6200.svelte.global.ls.google.com.:6297
+E1010 06:31:08.243032     209 cell_utility.cc:250] Looking up pubsub cell (path=/ls/local/slave/pubsub/registry/cells/service) failed
+E1010 06:31:08.244028     209 publisher_client.cc:2323] Publisher(cell:service topic:perfgate-client-analytics id:perfgate-client) received error: Unknown pubsub cell 'service' in topic name 'perfgate-client-analytics'
+E1010 06:31:08.428619      19 pubsub_recorder.cc:118] Pubsub publisher failed to start, disabling usage metrics logging: Unknown pubsub cell 'service' in topic name 'perfgate-client-analytics'
+I1010 06:31:08.428789      19 pubsub_recorder.cc:145] Stopping Pubsub2 publisher
+I1010 06:31:08.479363      19 pubsub_recorder.cc:158] Successfully stopped Pubsub2 publisher
+I1010 06:31:08.480847      19 bq_benchmark_base.py:1585] Test Output:
+test_status: FATAL_FAIL
+summary_output: "Load Main error: Traceback (most recent call last):
+File \"/dremel_query_perf_test.par/google3/testing/performance/perfgate/internal/py/load/microservice/common/load_main_base.py\", line 77, in Execute
+with self._microservice as microservice:
+File \"/dremel_query_perf_test.par/google3/testing/performance/perfgate/internal/py/load/microservice/common/microservice_server.py\", line 81, in __enter__
+self, \'unix:%s\' % self._microservice_socket, _SERVER_STARTUP_SEC)
+File \"/dremel_query_perf_test.par/google3/testing/performance/perfgate/internal/py/load/microservice/common/utils.py\", line 39, in CreateReachableChannel
+\'to be reachable.\' % (elapsed(), socket))
+RuntimeError: Timed out after waiting 60 seconds for channel unix:@perfgate_microservice_socket_155349390081993093651355235938709688080 to be reachable.
+"
+[  FAILED  ] DremelSingleQueryBenchmarkTest.test_dremel_auto_semi_join_1
+======================================================================
+FAIL: test_dremel_auto_semi_join_1 (__main__.DremelSingleQueryBenchmarkTest)
+test_dremel_auto_semi_join_1 (__main__.DremelSingleQueryBenchmarkTest)
+----------------------------------------------------------------------
+Traceback (most recent call last):
+File "/dremel_query_perf_test.par/google3/third_party/py/absl/third_party/unittest3_backport/case.py", line 37, in testPartExecutor
+yield
+File "/dremel_query_perf_test.par/google3/third_party/py/absl/third_party/unittest3_backport/case.py", line 162, in run
+testMethod()
+File "/dremel_query_perf_test.par/google3/cloud/helix/testing/perf/bq_benchmark_base.py", line 1139, in TestFunction
+debug_options=debug_options)
+File "/dremel_query_perf_test.par/google3/cloud/helix/testing/perf/bq_benchmark_base.py", line 1596, in RunBench
+(test_output.run_chart_link, test_output.summary_output))
+AssertionError: 3 != 1 : Benchmark run (chart = ) FAILED with:
+Load Main error: Traceback (most recent call last):
+File "/dremel_query_perf_test.par/google3/testing/performance/perfgate/internal/py/load/microservice/common/load_main_base.py", line 77, in Execute
+with self._microservice as microservice:
+File "/dremel_query_perf_test.par/google3/testing/performance/perfgate/internal/py/load/microservice/common/microservice_server.py", line 81, in __enter__
+self, 'unix:%s' % self._microservice_socket, _SERVER_STARTUP_SEC)
+File "/dremel_query_perf_test.par/google3/testing/performance/perfgate/internal/py/load/microservice/common/utils.py", line 39, in CreateReachableChannel
+'to be reachable.' % (elapsed(), socket))
+RuntimeError: Timed out after waiting 60 seconds for channel unix:@perfgate_microservice_socket_155349390081993093651355235938709688080 to be reachable.
+
+
+----------------------------------------------------------------------
+Ran 1 test in 85.279s
+
+FAILED (failures=1)
+s
