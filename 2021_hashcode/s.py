@@ -9,7 +9,7 @@ class Solution(object):
     def __init__(self, streets, incoming, outgoing, vehicles):
         self.streets = streets
         self.vehicles = vehicles
-        self.incoming = outgoing
+        self.incoming = incoming
         self.outgoing = outgoing
         # eprint(streets)
         # eprint(intersections)
@@ -19,8 +19,13 @@ class Solution(object):
         sol = []
         for ind in self.incoming:
             incoming_streets = self.incoming[ind]
-            sol.append((ind, [(next(iter(incoming_streets)), 2)]))
+            schedule = []
+            for st in incoming_streets:
+                schedule.append((st, 1))
+            sol.append((ind, schedule))
         return sol
+    #
+    # def evaluate(self):
 
 D, I, S, V, F = [int(s) for s in input().strip().split(" ")]
 streets = {}
@@ -28,12 +33,12 @@ incoming = {}
 outgoing = {}
 for index in range(S):
     B, E, name, length = [s for s in input().split(" ")]
-    inter = incoming.get(B, set())
+    inter = outgoing.get(B, set())
     inter.add(name)
-    incoming[B] = inter
-    inter = outgoing.get(E, set())
+    outgoing[B] = inter
+    inter = incoming.get(E, set())
     inter.add(name)
-    outgoing[E] = inter
+    incoming[E] = inter
     streets[name] = ((B, E), length)
 
 vehicles = []
@@ -43,6 +48,7 @@ for index in range(V):
 
 s = Solution(streets, incoming, outgoing, vehicles)
 opt_sol=s.get_opt_solution()
+# eprint(s.evaluate())
 
 # opt_sol = None
 # max_score = -1
