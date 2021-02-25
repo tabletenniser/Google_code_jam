@@ -18,7 +18,7 @@ class Solution(object):
         sol = []
         for ind in intersections:
             incoming_streets = intersections[ind]
-            sol.append((ind, [next(iter(incoming_streets)), 2]))
+            sol.append((ind, [(next(iter(incoming_streets)), 2)]))
         return sol
 
 D, I, S, V, F = [int(s) for s in input().strip().split(" ")]
@@ -58,10 +58,8 @@ opt_sol=s.get_opt_solution()
 eprint("Solution:", opt_sol)
 print(len(opt_sol))
 for line in opt_sol:
-    print(line[0])
+    print(line[0]) # intersection index
     signals = line[1]
-    print(signals)
+    print(len(signals))
     for sig in signals:
-        print(signals)
-    orders = ' '.join([str(p[0]) for p in line])
-    print(len(line), orders)
+        print(' '.join([str(p) for p in sig]))
