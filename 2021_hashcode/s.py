@@ -6,40 +6,42 @@ def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 class Solution(object):
-    def __init__(self, streets, intersections, vehicles):
+    def __init__(self, streets, incoming, outgoing, vehicles):
         self.streets = streets
         self.vehicles = vehicles
-        self.intersections = intersections
-        eprint(streets)
-        eprint(intersections)
-        eprint(vehicles)
+        self.incoming = outgoing
+        self.outgoing = outgoing
+        # eprint(streets)
+        # eprint(intersections)
+        # eprint(vehicles)
 
     def get_opt_solution(self):
         sol = []
-        for ind in intersections:
-            incoming_streets = intersections[ind]
+        for ind in self.incoming:
+            incoming_streets = self.incoming[ind]
             sol.append((ind, [(next(iter(incoming_streets)), 2)]))
         return sol
 
 D, I, S, V, F = [int(s) for s in input().strip().split(" ")]
 streets = {}
-intersections = {}
+incoming = {}
+outgoing = {}
 for index in range(S):
     B, E, name, length = [s for s in input().split(" ")]
-    inter = intersections.get(B, set())
+    inter = incoming.get(B, set())
     inter.add(name)
-    intersections[B] = inter
-    inter = intersections.get(E, set())
+    incoming[B] = inter
+    inter = outgoing.get(E, set())
     inter.add(name)
-    intersections[E] = inter
-    streets[name] = ({B, E}, length)
+    outgoing[E] = inter
+    streets[name] = ((B, E), length)
 
 vehicles = []
 for index in range(V):
     vehicles.append([s for s in input().split(" ")][1:])
 
 
-s = Solution(streets, intersections, vehicles)
+s = Solution(streets, incoming, outgoing, vehicles)
 opt_sol=s.get_opt_solution()
 
 # opt_sol = None
@@ -55,7 +57,7 @@ opt_sol=s.get_opt_solution()
 #         opt_sol = sol
 #     i += 1
 
-eprint("Solution:", opt_sol)
+# eprint("Solution:", opt_sol)
 print(len(opt_sol))
 for line in opt_sol:
     print(line[0]) # intersection index
