@@ -4,44 +4,48 @@ import math
 import time
 import heapq
 from collections import namedtuple,defaultdict
-import random
+import copy
 
 MAX_INT = 10000000
-MAX_DROPPING_VEHICLE = 16
-QUEUE_THRESHOLD = 3
-QUEUE_DIVIDER = 3
-FIRST_X_PERCENT_QUEUE = 50
+MAX_MAX_GREEN_LIGHT_LENGTH = 12
+DESIRED_IND_OFFSET = random.randint(0,0)
+MIN_DROPPING_VEHICLE = 0
+MAX_DROPPING_VEHICLE = 160
+QUEUE_THRESHOLD = 200
+QUEUE_DIVIDER = 200
+FIRST_X_PERCENT_QUEUE = 100
 QUEUED_STREETS = {}
 LONG_WAIT_DEBUG_THRESHOLD = 220
 FIRST_X_PERCENT_LONG_WAIT = 30
 # DEBUGGING_STREETS = {'bei-i', 'i-bb', 'bb-fbb', 'fbb-bjjc'}
 DEBUGGING_STREETS = {}
 
-queuedCar = namedtuple('queuedCar', ['time_to_leave','cur_street','remaining_path'])
+queuedCar = namedtuple('queuedCar', ['time_to_leave','car_i', 'path_j'])
 Street = namedtuple('Street', ['name', 'begin', 'end', 'length'])
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
 
 class Solution(object):
-    def __init__(self, streets, incoming, vehicles, D, car_limit):
+    def __init__(self, streets, incoming, vehicles, D, max_green_light):
+        self.max_green_light = max_green_light
         self.streets = streets # {name: (name, begin, end, l)}
-        self.incoming = incoming # {interection: {streets}}
         self.D = D  # simulation duration
         vehicle_path_length_pair = []
         self.max_street_length = max([s.length for s in self.streets.values()])
-        for v in vehicles:
-            length = sum([self.streets[s].length for s in v[1:]])
-            vehicle_path_length_pair.append((length, v))
-        vehicle_path_length_pair.sort()
-        # vehicles sorted by path length
-        self.vehicles = vehicle_path_length_pair[:car_limit]
-
+        self.vehicles = vehicles
         self.street_frequency = {} # {name_str: frequency_int}
-        for _,v in self.vehicles:
+        for _,v in self.vehicles.items():
             for s in v[:-1]:
                 self.street_frequency[s] = self.street_frequency.get(s, 0)+1
         self.max_wait_time = 0 # metric: max wait for bad order
+        self.incoming = copy.deepcopy(incoming) # {interection: {streets}}
+        self.inter_total_freq = {} # {intersection: freq_int}
+        for inter in self.incoming.keys():
+            self.incoming[inter] = list(filter(lambda x: x in self.street_frequency and self.street_frequency[x] > 0, self.incoming[inter]))
+            self.inter_total_freq[inter] = 0
+            for st in self.incoming[inter]:
+                self.inter_total_freq[inter] += self.street_frequency[st]
         # eprint("streets:", streets)
         # eprint("vehicles:", vehicles)
         # eprint("street_frequency:", self.street_frequency)
@@ -115,6 +119,7 @@ class Solution(object):
             return MAX_INT
         schedule = self.sol[inter]
         cycle_time = sum([s[1] for s in schedule if s is not None])
+        assert cycle_time != 0, incoming_street + str(schedule)+str(self.street_frequency)
         cur_sim_time = earliest_time - earliest_time % cycle_time
         street_index = 0
         while cur_sim_time < earliest_time:
@@ -144,48 +149,47 @@ class Solution(object):
         # global priority queue storing first car of each intersection ordered by first allowed time to pass
         first_cars_pq = []
         street_to_queues = defaultdict(list)
-        for length_car_pair in self.vehicles:
-            car = length_car_pair[1]
+        for car_i,car in self.vehicles.items():
             cur_street_name = car[0]
-            remaining_path = car[1:]
             inter = self.streets[cur_street_name].end
             time_to_leave = self._getNextAllowedTime(cur_street_name, 0)
-            queued_car = queuedCar(time_to_leave, cur_street_name, remaining_path)
+            queued_car = queuedCar(time_to_leave, car_i, 1)
             if cur_street_name not in street_to_queues or len(street_to_queues[cur_street_name])== 0:
                 heapq.heappush(first_cars_pq, queued_car)
             street_to_queues[cur_street_name].append(queued_car)
 
         score = 0
-        cars_passed = 0
+        cars_passed = set()
         while len(first_cars_pq) > 0 and first_cars_pq[0].time_to_leave < self.D:
             cur_car = heapq.heappop(first_cars_pq)
-            cur_street_name = cur_car.cur_street
+            cur_car_path = self.vehicles[cur_car.car_i]
+            cur_street_name = cur_car_path[cur_car.path_j-1]
             street_to_queues[cur_street_name].pop(0)
-            outgoing_street_name = cur_car.remaining_path[0]
+            outgoing_street_name = cur_car_path[cur_car.path_j]
             arrival_at_next_inter = cur_car.time_to_leave + self.streets[outgoing_street_name].length
-            if len(cur_car.remaining_path) == 1 and arrival_at_next_inter <= self.D:
+            if cur_car.path_j == len(cur_car_path) - 1 and arrival_at_next_inter <= self.D:
                 score += F + (self.D - arrival_at_next_inter)
-                cars_passed += 1
-            # elif len(cur_car.remaining_path) > 1:
+                cars_passed.add(cur_car.car_i)
             else:
                 time_to_leave_next_inter = self._getNextAllowedTime(outgoing_street_name, arrival_at_next_inter)
-                queued_car = queuedCar(time_to_leave_next_inter, outgoing_street_name, cur_car.remaining_path[1:])
+                queued_car = queuedCar(time_to_leave_next_inter, cur_car.car_i, cur_car.path_j+1)
                 if outgoing_street_name not in street_to_queues or len(street_to_queues[outgoing_street_name])== 0:
                     heapq.heappush(first_cars_pq, queued_car)
                 street_to_queues[outgoing_street_name].append(queued_car)
             if len(street_to_queues[cur_street_name]) > 0:
                 next_car_in_queue = street_to_queues[cur_street_name][0]
                 time_to_leave = self._getNextAllowedTime(cur_street_name, max(cur_car.time_to_leave+1, next_car_in_queue.time_to_leave))
-                heapq.heappush(first_cars_pq, queuedCar(time_to_leave, next_car_in_queue.cur_street, next_car_in_queue.remaining_path))
+                heapq.heappush(first_cars_pq, queuedCar(time_to_leave, next_car_in_queue.car_i, next_car_in_queue.path_j))
         return score, cars_passed
 
     def _findNextAllowedTime(self, incoming_street, earliest_time):
         if incoming_street in DEBUGGING_STREETS:
             eprint(incoming_street, ' simulate start time: ', earliest_time)
         inter = self.streets[incoming_street].end
-        incoming_streets = self.incoming[inter]
-        incoming_streets = list(filter(lambda x: x in self.street_frequency and self.street_frequency[x] > 0, incoming_streets))
-        num_strts = len(incoming_streets)
+        num_strts = len(self.incoming[inter])
+        if num_strts == 0:
+            return MAX_INT
+        assert num_strts > 0, incoming_street + inter + str(self.incoming[inter])
         if inter not in self.sol:
             self.sol[inter] = [None for _ in range(num_strts)]
         schedule = self.sol[inter]
@@ -194,11 +198,11 @@ class Solution(object):
             offset = 0
             if incoming_street in self.prev_long_wait_streets:
                 offset = self.prev_long_wait_streets[incoming_street][0]
-            buffer_t = random.randint(1, 1)
-            desired_ind= (earliest_time - offset + buffer_t) % num_strts
+            desired_ind= (earliest_time - offset + DESIRED_IND_OFFSET) % num_strts
             while schedule[desired_ind] is not None:
                 desired_ind = (desired_ind+ 1) % num_strts
-            w = 1 if incoming_street not in self.prev_long_queue_streets else self.prev_long_queue_streets[incoming_street][0] // QUEUE_DIVIDER
+            w = math.ceil(self.street_frequency.get(incoming_street, 0) / self.inter_total_freq[inter] * self.max_green_light)
+            # w = 1 if incoming_street not in self.prev_long_queue_streets else self.prev_long_queue_streets[incoming_street][0] // QUEUE_DIVIDER
             schedule[desired_ind] = (incoming_street, w)
         # TODO: Make this work when not all streets have 1. If not-1 weight gets inserted, try move all subsequent indices if possible.
         cur_sim_time = earliest_time - earliest_time % num_strts
@@ -235,31 +239,30 @@ class Solution(object):
         # global priority queue storing first car of each intersection ordered by first allowed time to pass
         first_cars_pq = []
         street_to_queues = defaultdict(list)
-        for length_car_pair in self.vehicles:
-            car = length_car_pair[1]
+        for car_i,car in self.vehicles.items():
             cur_street_name = car[0]
-            remaining_path = car[1:]
             inter = self.streets[cur_street_name].end
             time_to_leave = self._findNextAllowedTime(cur_street_name, 0)
-            queued_car = queuedCar(time_to_leave, cur_street_name, remaining_path)
+            queued_car = queuedCar(time_to_leave, car_i, 1)
             if cur_street_name not in street_to_queues or len(street_to_queues[cur_street_name])== 0:
                 heapq.heappush(first_cars_pq, queued_car)
             street_to_queues[cur_street_name].append(queued_car)
 
         score = 0
-        cars_passed = 0
+        cars_passed = set()
         while len(first_cars_pq) > 0 and first_cars_pq[0].time_to_leave < self.D:
             cur_car = heapq.heappop(first_cars_pq)
-            cur_street_name = cur_car.cur_street
+            cur_car_path = self.vehicles[cur_car.car_i]
+            cur_street_name = cur_car_path[cur_car.path_j-1]
             street_to_queues[cur_street_name].pop(0)
-            outgoing_street_name = cur_car.remaining_path[0]
+            outgoing_street_name = cur_car_path[cur_car.path_j]
             arrival_at_next_inter = cur_car.time_to_leave + self.streets[outgoing_street_name].length
-            if len(cur_car.remaining_path) == 1 and arrival_at_next_inter <= self.D:
+            if cur_car.path_j == len(cur_car_path) - 1 and arrival_at_next_inter <= self.D:
                 score += F + (self.D - arrival_at_next_inter)
-                cars_passed += 1
-            elif len(cur_car.remaining_path) > 1:
-                time_to_leave_next_inter = self._findNextAllowedTime(cur_car.remaining_path[0], arrival_at_next_inter)
-                queued_car = queuedCar(time_to_leave_next_inter, outgoing_street_name, cur_car.remaining_path[1:])
+                cars_passed.add(cur_car.car_i)
+            else:
+                time_to_leave_next_inter = self._findNextAllowedTime(outgoing_street_name, arrival_at_next_inter)
+                queued_car = queuedCar(time_to_leave_next_inter, cur_car.car_i, cur_car.path_j+1)
                 if outgoing_street_name not in street_to_queues or len(street_to_queues[outgoing_street_name])== 0:
                     heapq.heappush(first_cars_pq, queued_car)
                 street_to_queues[outgoing_street_name].append(queued_car)
@@ -270,7 +273,7 @@ class Solution(object):
                 if time_to_leave > cur_car.time_to_leave + 1 and queue_length >= QUEUE_THRESHOLD and cur_street_name not in self.long_queue_streets and cur_car.time_to_leave < self.D / 100 * FIRST_X_PERCENT_QUEUE:
                     # eprint(cur_street_name, " has queue lenth of ", queue_length, " at time: ", cur_car.time_to_leave)
                     self.long_queue_streets[cur_street_name] = (queue_length, cur_car.time_to_leave)
-                heapq.heappush(first_cars_pq, queuedCar(time_to_leave, next_car_in_queue.cur_street, next_car_in_queue.remaining_path))
+                heapq.heappush(first_cars_pq, queuedCar(time_to_leave, next_car_in_queue.car_i, next_car_in_queue.path_j))
         return score, cars_passed
 
 D, I, S, V, F = [int(s) for s in input().strip().split(" ")]
@@ -283,27 +286,38 @@ for index in range(S):
     incoming[E] = inter
     streets[name] = Street(name, B, E, int(length))
 
-vehicles = []
+original_vehicles = {}
 for index in range(V):
-    vehicles.append([s for s in input().split(" ")][1:])
-
+    original_vehicles[index] = [s for s in input().split(" ")][1:]
 
 opt_sol = None
 max_score = -1
 i = 0
-# s = Solution(streets, incoming, vehicles, D, len(vehicles))
-# eprint('Abs max score', abs_max_score, cars_passed, len(vehicles), sim_street_names)
+# s = Solution(streets, incoming, original_vehicles, D)
+# eprint('Abs max score', abs_max_score, cars_passed, len(original_vehicles), sim_street_names)
 start = time.time()
-MAX_ITER = 1
+MAX_ITER = 1000
+all_vehicles = set(original_vehicles.keys())
 while time.time() - start < 1200 and i < MAX_ITER:
-    dropping_vehicles = i % MAX_DROPPING_VEHICLE
-    s = Solution(streets, incoming, vehicles, D, len(vehicles)-dropping_vehicles)
     j = 0
-    s.long_wait_streets = {}
-    s.long_queue_streets = {}
+    vehicles_to_drop = MIN_DROPPING_VEHICLE + i % (MAX_DROPPING_VEHICLE - MIN_DROPPING_VEHICLE)
+    max_green_light = 1+i % MAX_MAX_GREEN_LIGHT_LENGTH
+    DESIRED_IND_OFFSET = random.randint(max_green_light-1, max_green_light+3)
+    prev_long_wait_streets = {}
+    prev_long_queue_streets = {}
+    vehicles = copy.deepcopy(original_vehicles)
     while j < 2:
-        score, cars_passed = s.simulate(F, s.long_wait_streets, s.long_queue_streets)
-        # eprint(i, 'Simuate score ', j, score, cars_passed, len(vehicles), s.long_wait_streets, s.long_queue_streets)
+        s = Solution(streets, incoming, vehicles, D, max_green_light)
+        score, cars_passed = s.simulate(F, prev_long_wait_streets, prev_long_queue_streets)
+        eprint(i, 'Simuate score ', j, score, s.max_wait_time, len(cars_passed), s.long_wait_streets, s.long_queue_streets)
+        prev_long_queue_streets = s.long_queue_streets
+        prev_long_wait_streets = s.long_wait_streets
+        unpassed_cars = all_vehicles.difference(cars_passed)
+        # eprint(unpassed_cars)
+        # eprint(vehicles.keys())
+        if j == 0:
+            for c in list(unpassed_cars)[:vehicles_to_drop]:
+                del vehicles[c]
         j += 1
     max_green_light_length = 1
     # sol=s.get_opt_solution(max_green_light_length)
@@ -317,7 +331,7 @@ while time.time() - start < 1200 and i < MAX_ITER:
     score,cars_passed = s.evaluate(F)
     # eprint(i, 'Cur score:', score, 'max wait time:', s.max_wait_time, 'cars passed', cars_passed, time.time()-start, 'max_green_light_length', max_green_light_length)
     if score > max_score:
-        eprint('Max score at: ', i, score, 'max wait time:', s.max_wait_time, 'cars passed', cars_passed, time.time()-start, 'max_green_light_length', max_green_light_length, dropping_vehicles)
+        eprint('Max score at: ', i, score, '; max wait time:', s.max_wait_time, '; cars passed:', len(cars_passed), time.time()-start, 'max_green_light: ', max_green_light, 'vehicles:', len(vehicles))
         max_score = score
         opt_sol = sol
     i += 1
