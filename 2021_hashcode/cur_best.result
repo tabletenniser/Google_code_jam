@@ -1,0 +1,76 @@
+(base) zexuan@zexuan-macbookpro:~/Google_code_jam/2021_hashcode (master) $ bash run.sh
+a.txt
+Max score at:  0 0 max wait time: 0 cars passed 0 9.799003601074219e-05 max_green_light_length 14 19
+Max score at:  1 1002 max wait time: 0 cars passed 1 0.0004990100860595703 max_green_light_length 2 3
+Max score at:  307 2002 max wait time: 0 cars passed 2 0.013745307922363281 max_green_light_length 2 0
+b.txt
+Max score at:  0 4556795 max wait time: 10 cars passed 998 0.44880104064941406 max_green_light_length 6 2
+Max score at:  46 4566666 max wait time: 9 cars passed 1000 28.045326232910156 max_green_light_length 3 0
+Max score at:  205 4566798 max wait time: 9 cars passed 1000 124.3811149597168 max_green_light_length 1 0
+Max score at:  474 4567062 max wait time: 9 cars passed 1000 285.3697700500488 max_green_light_length 2 0
+c.txt
+Max score at:  0 1274352 max wait time: 3 cars passed 977 2.1009390354156494 max_green_light_length 1 19
+Max score at:  1 1296873 max wait time: 5 cars passed 995 3.9545469284057617 max_green_light_length 3 2
+Max score at:  36 1299086 max wait time: 4 cars passed 996 73.24174690246582 max_green_light_length 2 1
+Max score at:  126 1300155 max wait time: 4 cars passed 997 249.53358578681946 max_green_light_length 2 0
+d.txt
+Max score at:  0 1350428 max wait time: 266 cars passed 883 10.26734209060669 max_green_light_length 9 8
+Max score at:  1 1575523 max wait time: 267 cars passed 951 20.225476026535034 max_green_light_length 2 4
+Max score at:  2 1580832 max wait time: 265 cars passed 940 30.1055748462677 max_green_light_length 2 28
+Max score at:  54 1581284 max wait time: 265 cars passed 944 545.8755121231079 max_green_light_length 3 16
+3 17 is the current best
+e.txt
+Max score at:  0 683155 max wait time: 219 cars passed 788 0.2651691436767578 max_green_light_length 5 27
+Max score at:  1 688458 max wait time: 220 cars passed 794 0.5379481315612793 max_green_light_length 10 7
+Max score at:  2 689377 max wait time: 220 cars passed 795 0.7234852313995361 max_green_light_length 9 9
+Max score at:  3 691457 max wait time: 220 cars passed 798 0.9079451560974121 max_green_light_length 15 0
+Max score at:  5 693631 max wait time: 220 cars passed 800 1.3928959369659424 max_green_light_length 6 0
+Max score at:  49 693909 max wait time: 220 cars passed 800 9.500728130340576 max_green_light_length 5 0
+Max score at:  473 694097 max wait time: 220 cars passed 800 88.59129214286804 max_green_light_length 3 0
+f.txt
+Max score at:  0 1335091 max wait time: 13 cars passed 793 3.126727819442749 max_green_light_length 6 26
+Max score at:  2 1372409 max wait time: 13 cars passed 807 9.958394050598145 max_green_light_length 7 10
+Max score at:  12 1376488 max wait time: 18 cars passed 799 45.33918905258179 max_green_light_length 12 2
+Max score at:  17 1377940 max wait time: 16 cars passed 805 64.0678641796112 max_green_light_length 10 9
+Max score at:  30 1380328 max wait time: 14 cars passed 808 108.61336016654968 max_green_light_length 8 4
+Max score at:  39 1380628 max wait time: 13 cars passed 812 142.51425409317017 max_green_light_length 7 1
+Max score at:  120 1381196 max wait time: 16 cars passed 805 451.66788506507874 max_green_light_length 10 2
+
+
+(base) zexuan@zexuan-macbookpro:~/Google_code_jam/2021_hashcode (master) $ bash run.sh
+a.txt
+Abs max score 2002 5 2 2
+Found max score: 0 1002 0.00010585784912109375 0
+Found max score: 1 2002 0.00025200843811035156 1
+b.txt
+Abs max score 4574648 25740 1000 1000
+Found max score: 0 521029 0.169342041015625 0
+Found max score: 1 4566832 0.4998478889465332 1
+Found max score: 2 4567100 0.8440220355987549 2
+c.txt
+Abs max score 1328159 74813 999 1000
+Found max score: 0 173306 0.2634150981903076 0
+Found max score: 1 1300047 1.5080828666687012 1
+Found max score: 2 1300184 2.558058023452759 2
+d.txt
+Abs max score 3986539 199000 1000 1000
+Found max score: 0 0 0.6665112972259521 0
+Found max score: 1 1575620 7.103492259979248 1
+Found max score: 2 1575639 14.002738237380981 2
+e.txt
+Abs max score 919926 5051 999 1000
+Found max score: 0 155797 0.017292022705078125 0
+Found max score: 1 690689 0.1519930362701416 1
+Found max score: 2 690794 0.2445387840270996 2
+Found max score: 3 691474 0.33086276054382324 3
+f.txt
+Abs max score 1711376 135478 996 1000
+Found max score: 0 69234 0.2983229160308838 0
+Found max score: 1 819024 2.1423308849334717 1
+Found max score: 2 1134289 6.1089768409729 2
+Found max score: 3 1258387 9.361263990402222 3
+Found max score: 4 1326588 11.640529870986938 4
+Found max score: 5 1352261 13.199549913406372 5
+Found max score: 6 1367145 14.931005954742432 6
+Found max score: 7 1380078 17.02914786338806 7
+Found max score: 8 1383503 18.827334880828857 8

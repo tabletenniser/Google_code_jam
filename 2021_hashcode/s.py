@@ -31,7 +31,6 @@ class Solution(object):
         self.max_green_light = max_green_light
         self.streets = streets # {name: (name, begin, end, l)}
         self.D = D  # simulation duration
-        vehicle_path_length_pair = []
         self.max_street_length = max([s.length for s in self.streets.values()])
         self.vehicles = vehicles
         self.street_frequency = {} # {name_str: frequency_int}
