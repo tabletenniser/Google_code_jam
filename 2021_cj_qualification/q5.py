@@ -1,6 +1,7 @@
 import random
-MAGIC_NUMBER = 10
-SAMPLES = 400
+MAGIC_NUMBER = 15
+PERCENTAGE_THRESHOLD = 8
+SMALLEST_PTS = 30
 
 def fcn(students):
     num_questions = len(students[0])
@@ -20,16 +21,25 @@ def fcn(students):
             else:
                 total[questions_correct[i]] += 1
         samples = []
-        while len(samples) < SAMPLES:
-            a = random.randint(0, 40)
-            b = random.randint(0, 40)
-            if a == b or total[a] < MAGIC_NUMBER or total[b] < MAGIC_NUMBER:
+        a = 0
+        c_a = 0
+        while c_a < SMALLEST_PTS:
+            if total[a] < PERCENTAGE_THRESHOLD:
+                a += 1
                 continue
-            percentage_a = correct[a]/total[a]*100
-            percentage_b = correct[b]/total[b]*100
-            # if percentage_a > 99 or percentage_b > 99:
-            #     continue
-            samples.append((percentage_a-percentage_b) / (a-b))
+            b = a + 1
+            c_b = b
+            while c_b < a+SMALLEST_PTS and b < 99:
+                if total[b] < PERCENTAGE_THRESHOLD:
+                    b += 1
+                    continue
+                percentage_a = correct[a]/total[a]*100
+                percentage_b = correct[b]/total[b]*100
+                samples.append((percentage_a-percentage_b) / (a-b))
+                b += 1
+                c_b += 1
+            a += 1
+            c_a += 1
         over_fifty = 0
         total_count = 0
         for i,(c,t) in enumerate(zip(correct, total)):
@@ -40,10 +50,10 @@ def fcn(students):
                     over_fifty += 1
                 # print(int(c/t*1000)/10, end=' ')
         slope = sum(samples) / len(samples)
-        if over_fifty / total_count > 0.9:
+        if over_fifty / total_count > 0.75:
             slopes.append((slope, total_correct, over_fifty/total_count, j))
     slopes.sort()
-    print(slopes)
+    # print(slopes)
     # for slope, total_correct, percent, index in slopes:
     #     if percent > 0.985 and slope < 0.6:
     #         return index + 1
